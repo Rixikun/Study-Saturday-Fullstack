@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 
-import StudentList from './StudentList.js';
-import SingleStudent from './SingleStudent.js';
-import NewStudentForm from './NewStudentForm.js';
+import StudentList from "./StudentList.js";
+import SingleStudent from "./SingleStudent.js";
+import NewStudentForm from "./NewStudentForm.js";
 
 export default class Main extends Component {
   constructor(props) {
@@ -11,11 +11,12 @@ export default class Main extends Component {
     this.state = {
       students: [],
       selectedStudent: {},
-      showStudent: false,
+      showStudent: false
     };
 
     this.selectStudent = this.selectStudent.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.addStudent = this.addStudent.bind(this);
   }
 
   componentDidMount() {
@@ -23,11 +24,11 @@ export default class Main extends Component {
   }
 
   async getStudents() {
-    console.log('fetching');
+    console.log("fetching");
     try {
-      const { data } = await axios.get('/student');
+      const { data } = await axios.get("/student");
       this.setState({ students: data });
-      console.log('THis is the State', this.state);
+      console.log("THis is the State", this.state);
     } catch (err) {
       console.error(err);
     }
@@ -35,18 +36,27 @@ export default class Main extends Component {
 
   selectStudent(student) {
     return this.setState({
-      selectedStudent: student,
+      selectedStudent: student
     });
   }
 
   handleClick(e) {
     return this.setState({
-      showStudent: !this.state.showStudent,
+      showStudent: !this.state.showStudent
+    });
+  }
+
+  addStudent(student) {
+    const newStudent = this.state.students.slice();
+    newStudent.push(student);
+    this.setState({
+      ...this.state,
+      students: newStudent
     });
   }
 
   render() {
-    console.log('this is the state in main', this.state);
+    console.log("this is the state in main", this.state);
     return (
       <div>
         <h1>Students</h1>
