@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 
-import StudentList from './StudentList.js';
-import SingleStudent from './SingleStudent.js';
+import StudentList from "./StudentList.js";
+import SingleStudent from "./SingleStudent.js";
+import NewStudentForm from "./NewStudentForm.js";
 
 export default class Main extends Component {
   constructor(props) {
@@ -10,9 +11,11 @@ export default class Main extends Component {
     this.state = {
       students: [],
       selectedStudent: {},
+      showStudents: false
     };
 
     this.selectStudent = this.selectStudent.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -20,9 +23,9 @@ export default class Main extends Component {
   }
 
   async getStudents() {
-    console.log('fetching');
+    console.log("fetching");
     try {
-      const { data } = await axios.get('/student');
+      const { data } = await axios.get("/student");
       this.setState({ students: data });
     } catch (err) {
       console.error(err);
@@ -31,14 +34,22 @@ export default class Main extends Component {
 
   selectStudent(student) {
     return this.setState({
-      selectedStudent: student,
+      selectedStudent: student
     });
+  }
+
+  handleClick(event) {
+    this.setState(state => ({
+      showStudents: !state.showStudents
+    }));
   }
 
   render() {
     return (
       <div>
         <h1>Students</h1>
+        <button onClick={this.handleClick}>Add New Student</button>
+        {this.state.showStudents && <NewStudentForm />}
         <table>
           <thead>
             <tr>
